@@ -1,0 +1,33 @@
+{
+  "configs": [
+    "-employee_service_specification.xml"
+  ],
+  "secureProperties": [],
+  "redeploymentEnabled": true,
+  "name": "com.mycompany:finalproject_emp_api:1.0.0-SNAPSHOT",
+  "minMuleVersion": "4.4.0",
+  "requiredProduct": "MULE_EE",
+  "classLoaderModelLoaderDescriptor": {
+    "id": "mule",
+    "attributes": {
+      "exportedPackages": [],
+      "exportedResources": [
+        "-employee_service_specification.xml",
+        "api/-employee_service_specification.raml",
+        "api/exchange_modules/c22bb2cd-b0b8-4d25-8d39-d76402c76ec9/employee-service-fragment/1.0.0/Datatype/customErrorMessage.raml",
+        "api/exchange_modules/c22bb2cd-b0b8-4d25-8d39-d76402c76ec9/employee-service-fragment/1.0.0/Datatype/Employee_without_Id.raml",
+        "api/exchange_modules/c22bb2cd-b0b8-4d25-8d39-d76402c76ec9/employee-service-fragment/1.0.0/Datatype/Employee_with_Id.raml",
+        "api/exchange_modules/c22bb2cd-b0b8-4d25-8d39-d76402c76ec9/employee-service-fragment/1.0.0/employee_service_fragment.raml",
+        "http.yaml",
+        "log4j2.xml",
+        "Soap.service.Dev.yaml",
+        "Soap.service.Test.yaml",
+        "Soap.sevice.Prod.yaml"
+      ]
+    }
+  },
+  "bundleDescriptorLoader": {
+    "id": "mule",
+    "attributes": {}
+  }
+}

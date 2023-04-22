@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="625edc6d-f546-4a8b-9c11-c83c350e51c1" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<flow name="error_handlingFlow" doc:id="0e002a34-9ac6-48af-b8f6-8515d0343499" >
+		<http:listener doc:name="Listener" doc:id="bb793bb2-d573-4d9b-914e-9a459c521af7" config-ref="HTTP_Listener_config" path="/{Ball}"/>
+		<set-variable value="#[message.attributes.uriParams]" doc:name="Set Variable" doc:id="819bfa41-02f9-47c5-9bd7-0e4689ce6629" variableName="Ball"/>
+		<set-payload value="#[vars.Ball]" doc:name="Set Payload" doc:id="e7e38ecf-11f3-43f5-b372-36694b22f206" />
+		<ee:transform doc:name="Transform Message" doc:id="0c46f24a-6a4e-4358-a6ad-8c0d61deae62" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="57f8147b-5f06-4f77-82c8-979a838d37f5" message="#[payload]"/>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="1c21e866-72f5-4c15-a1ea-d9a7fd19b466" type="ANY">
+				<ee:transform doc:name="Transform Message" doc:id="ae54fd40-3a8c-4e9a-9260-54a158afcb9b" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message":"Resource not found"
+}]]></ee:set-payload>
+					</ee:message>
+					<ee:variables >
+						<ee:set-variable variableName="httpstatus" ><![CDATA[501]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+				<logger level="INFO" doc:name="Logger" doc:id="8f6b098f-ee77-4188-9b30-dbbab6ebf53a" message="Resource not found"/>
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+</mule>
