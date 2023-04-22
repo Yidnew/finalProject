@@ -1,0 +1,64 @@
+#%RAML 1.0
+title: Employee_Service.raml
+mediaType: 
+- application/json
+version: v1
+baseUri: http://localhost:8081/api/
+types:
+  Employee: !include /exchange_modules/c22bb2cd-b0b8-4d25-8d39-d76402c76ec9/employee-service-fragment/1.0.0/Datatype/Employee_without_Id.raml
+  Employee_id: !include /exchange_modules/c22bb2cd-b0b8-4d25-8d39-d76402c76ec9/employee-service-fragment/1.0.0/Datatype/Employee_with_Id.raml
+  Error_Message: !include /exchange_modules/c22bb2cd-b0b8-4d25-8d39-d76402c76ec9/employee-service-fragment/1.0.0/Datatype/customErrorMessage.raml
+/employees:
+  get:
+    responses:
+      200: 
+        body:
+          type: Employee_id[]
+      404:
+        body:
+          type:  Error_Message             
+  post:
+      body:
+        application/json:
+          type: Employee
+      responses:
+        201:
+          body:
+            type: Employee_id[]
+        501:
+         body:
+           type: Error_Message                      
+  /{Employee_id}:
+    get:
+      responses:
+        200:
+          body:
+            type: Employee
+        404:
+          body:
+            type: Error_Message                       
+    put:
+      body:
+        application/json:
+          type: Employee
+      responses:
+        204:
+          body:
+            type: Employee_id
+        502:
+          body:
+            type: Error_Message                                  
+    delete:
+      responses:
+        200:
+          body:
+            type: Employee
+        404:
+          body:
+            type: 
+              Error_Message
+                    
+
+            
+
+            
